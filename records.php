@@ -20,6 +20,9 @@ class recordsRepository
      */
     public function storeRecord(array $params): bool
     {
+        if ($this->isPrivate($params['val'])) {
+            throw new RuntimeException('Private IP detected', 400);
+        }
         if ($this->validateDomain($params['domain'])) {
             $stmt = $this->connection->prepare("SELECT id FROM record WHERE 
                                                     type = ? AND domain = ? AND name= ? AND val= ? AND ttl= ?");
@@ -53,5 +56,14 @@ class recordsRepository
             throw new RuntimeException('Domain not exist', 400);
         }
         return true;
+    }
+
+    /**
+     * @param string $ip
+     * @return bool
+     */
+    private function isPrivate(string $ip) : bool
+    {
+        return !filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
     }
 }
