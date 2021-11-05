@@ -26,7 +26,8 @@ class recordsRepository
         if ($this->validateDomain($params['domain'])) {
             $stmt = $this->connection->prepare("SELECT id FROM record WHERE 
                                                     type = ? AND domain = ? AND name= ? AND val= ? AND ttl= ?");
-            $stmt->bind_param('sisdi', $params['type'], $params['domain'], $params['name'], $params['val'], $params['ttl']);
+            $stmt->bind_param('sisdi',
+                $params['type'], $params['domain'], $params['name'], $params['val'], $params['ttl']);
             $stmt->execute();
             $result = $stmt->get_result();
             if ($result->num_rows > 0) {
@@ -35,7 +36,8 @@ class recordsRepository
 
             $stmt = $this->connection->prepare("INSERT INTO record (type, domain, name, val, ttl) 
                                                     VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param('sisdi', $params['type'], $params['domain'], $params['name'], $params['val'], $params['ttl']);
+            $stmt->bind_param('sisdi',
+                $params['type'], $params['domain'], $params['name'], $params['val'], $params['ttl']);
             $stmt->execute();
             return true;
         }
