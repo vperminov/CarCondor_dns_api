@@ -92,7 +92,6 @@ class domainsRepository
             $stmt = $this->connection->prepare("INSERT INTO domain (fqdn) VALUES (?)");
             $stmt->bind_param('s',$domain);
             $stmt->execute();
-            $stmt->execute();
             if ($stmt->errno) {
                 throw new RuntimeException($stmt->error, 400);
             }
