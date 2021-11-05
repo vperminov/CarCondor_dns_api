@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "de2663b7-1c18-4031-969c-8f65357a7325",
+		"name": "DNS API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List all domains",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}",
+					"host": [
+						"{{host}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search domains by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/search/?domain=rusit",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "domain",
+							"value": "rusit"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new record",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "type",
+							"value": "A44444444",
+							"type": "text"
+						},
+						{
+							"key": "domain",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "some_name",
+							"type": "text"
+						},
+						{
+							"key": "val",
+							"value": "some_val",
+							"type": "text"
+						},
+						{
+							"key": "ttl",
+							"value": "5",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/create-record",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"create-record"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add new domain",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "domain",
+							"value": "rusit.io",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/create",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All domains with connected records",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/get",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
