@@ -16,9 +16,9 @@ class recordsRepository
 
     /**
      * @param array $params
-     * @return bool
+     * @return array|false
      */
-    public function storeRecord(array $params): bool
+    public function storeRecord(array $params)
     {
         if ($this->isPrivate($params['val'])) {
             throw new RuntimeException('Private IP detected', 400);
@@ -36,10 +36,14 @@ class recordsRepository
 
             $stmt = $this->connection->prepare("INSERT INTO record (type, domain, name, val, ttl) 
                                                     VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param('sisdi',
+            $stmt->bind_param('sissi',
                 $params['type'], $params['domain'], $params['name'], $params['val'], $params['ttl']);
             $stmt->execute();
-            return true;
+            if ($stmt->errno) {
+                throw new RuntimeException($stmt->error, 400);
+            }
+            $result = $this->connection->query('SELECT * FROM record WHERE id=LAST_INSERT_ID()');
+            return $result->fetch_assoc();
         }
         return false;
     }

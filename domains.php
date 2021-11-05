@@ -76,9 +76,9 @@ class domainsRepository
 
     /**
      * @param string $domain
-     * @return array
+     * @return array|false
      */
-    public function storeDomain(string $domain) : array
+    public function storeDomain(string $domain)
     {
         if ($this->validateDomain($domain)) {
             $stmt = $this->connection->prepare("SELECT fqdn FROM domain WHERE fqdn = ?");
@@ -92,9 +92,15 @@ class domainsRepository
             $stmt = $this->connection->prepare("INSERT INTO domain (fqdn) VALUES (?)");
             $stmt->bind_param('s',$domain);
             $stmt->execute();
-            return ['success' => true];
+            $stmt->execute();
+            if ($stmt->errno) {
+                throw new RuntimeException($stmt->error, 400);
+            }
+
+            $result = $this->connection->query('SELECT * FROM domain WHERE id=LAST_INSERT_ID()');
+            return $result->fetch_assoc();
         }
-        return ['success' => false];
+        return false;
     }
 
     /**

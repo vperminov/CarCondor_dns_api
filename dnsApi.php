@@ -67,7 +67,10 @@ class dnsApi extends Api
      */
     protected function createDomainAction(): string
     {
-        return $this->response($this->domainsRepository->storeDomain($this->requestParams['domain'] ?? ''));
+        if ($data = $this->domainsRepository->storeDomain($this->requestParams['domain'] ?? '')) {
+            return $this->response($data);
+        }
+        return $this->response(['success' => false], 400);
     }
 
     /**
@@ -78,8 +81,8 @@ class dnsApi extends Api
      */
     protected function createRecordAction(): string
     {
-        if ($this->recordsRepository->storeRecord($this->requestParams)) {
-            return $this->response(['success' => true]);
+        if ($data = $this->recordsRepository->storeRecord($this->requestParams)) {
+            return $this->response($data);
         }
         return $this->response(['success' => false], 400);
     }
